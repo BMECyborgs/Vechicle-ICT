@@ -2,8 +2,8 @@
 package graph;
 
 public class Coordinate {
-	private double x;
-	private double y;
+	public double x;
+	public double y;
 	
 	public Coordinate(double x, double y)
 	{
