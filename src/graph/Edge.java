@@ -25,12 +25,27 @@ public class Edge
 				Math.pow(source.getPosition().y - destination.getPosition().y, 2));
 	}
 	
+	public Node getSource()
+	{
+		return this.source;
+	}
+	
+	public Node getDestination()
+	{
+		return this.destination;
+	}
+	
 	public void print()
 	{
 		System.out.println("Edge:" + name + " starts from ");
 		source.print();
 		System.out.println(" ahead to ");
 		destination.print();
+	}
+
+	public double getCost() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }
