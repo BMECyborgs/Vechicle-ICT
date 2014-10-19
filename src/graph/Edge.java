@@ -35,11 +35,25 @@ public class Edge
 		return this.destination;
 	}
 	
+	public boolean equals(Edge other)
+	{
+		System.out.println(name + "==" + other.getName());
+		if (name != other.getName())
+			return false;
+		//if (source !=)
+		return true;
+	}
+	
+	public int hashCode()
+	{
+		return Integer.parseInt(name);
+	}
+	
 	public void print()
 	{
-		System.out.println("Edge:" + name + " starts from ");
+		System.out.print("'" + name + "' starts from ");
 		source.print();
-		System.out.println(" ahead to ");
+		System.out.print(" ahead to ");
 		destination.print();
 	}
 

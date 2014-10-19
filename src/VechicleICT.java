@@ -1,5 +1,6 @@
 import graph.Coordinate;
 import graph.Edge;
+import graph.Graph;
 import graph.Node;
 
 
@@ -26,6 +27,19 @@ public class VechicleICT {
 		
 		System.out.println("Length of " + firstEdge.getName() + ": " + firstEdge.getLength());
 		
+		System.out.println("--- Graph ---");
+		
+		Graph myCity = new Graph();
+		
+		// Locations
+		Node gellert = new Node(new Coordinate(0, -12), "Szent Gellért Tér");
+		Node korter = new Node(new Coordinate(-2, -14), "Móricz");
+		Node ujbuda = new Node(new Coordinate(-2, -16), "Újbuda Központ");
+		
+
+		myCity.addEdge(new Edge(gellert, korter, "Bartók Béla út"));
+		myCity.addEdge(new Edge(gellert, korter, "Bartók Béla út"));
+		myCity.print();
 	}
 
 }

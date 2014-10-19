@@ -13,6 +13,6 @@ public class Coordinate {
 	
 	public void print()
 	{
-		System.out.println("(" + x + "," + y + ")");		
+		System.out.print("(" + x + "," + y + ")");		
 	}
 }

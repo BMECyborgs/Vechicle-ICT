@@ -27,11 +27,40 @@ public class Graph {
 		return null;
 	}
 	
+	public void addNode(Node newNode)
+	{
+		this.nodes.put(newNode.getName(), newNode);
+	}
+	
 	public Node getNode(String name)
 	{
 		return this.nodes.get(name);
 	}
 	
+	public void addEdge(Edge newEdge)
+	{
+		if (!this.nodes.containsValue(newEdge.getSource()))
+			this.nodes.put(newEdge.getName(), newEdge.getSource());
+		if (!this.nodes.containsValue(newEdge.getDestination()))
+			this.nodes.put(newEdge.getName(), newEdge.getDestination());
+		
+		if (this.edges.containsValue(newEdge))
+			System.out.println("Edge is already contained!");
+		
+		this.edges.put(newEdge.getName(), newEdge);
+	}
+
+	public void addBidirectionalEdge(Edge newEdge)
+	{
+		if (!nodes.containsValue(newEdge.getSource()))
+			nodes.put(newEdge.getName(), newEdge.getSource());
+		if (!nodes.containsValue(newEdge.getDestination()))
+			nodes.put(newEdge.getName(), newEdge.getDestination());
+		
+		edges.put(newEdge.getName(), newEdge);
+		edges.put(newEdge.getName(),
+                new Edge(newEdge.getDestination(), newEdge.getSource(), newEdge.getName()));
+	}
 	public Edge getEdge(String name)
 	{
 		return this.edges.get(name);
@@ -55,5 +84,15 @@ public class Graph {
 		}
 		
 		return e;
+	}
+
+	public void print()
+	{
+		System.out.println("#nodes:" + this.nodes.size() + " #edges:"+ this.edges.size());
+		for (Edge oneEdge : this.edges.values())
+		{
+			oneEdge.print();
+			System.out.println("");
+		}
 	}
 }

@@ -26,7 +26,7 @@ public class Node {
 	
 	public void print()
 	{
-		System.out.print(name);
+		System.out.print("'"+name+"'");
 		position.print();
 	}
 	
