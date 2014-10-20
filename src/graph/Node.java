@@ -1,18 +1,24 @@
 package graph;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Node {
 	
 	private Coordinate position;
 	private String name;
-	private Map<String, Edge> startingEdges;
+	private ArrayList<Edge> startingEdges;
 	
 	public Node(Coordinate position, String name)
 	{
 		this.position = position;
 		this.name = name;
+		this.startingEdges = new ArrayList<Edge>();
+	}
+	
+	public void addEdge(Edge newEdge)
+	{
+		if (!this.startingEdges.contains(newEdge))
+			this.startingEdges.add(newEdge);
 	}
 	
 	public Coordinate getPosition()
@@ -34,7 +40,7 @@ public class Node {
 	{
 		ArrayList<String> neighbours = new ArrayList<String>();
 		
-		for (Edge e : this.startingEdges.values())
+		for (Edge e : this.startingEdges)
 		{
 			neighbours.add(e.getDestination().getName());
 		}

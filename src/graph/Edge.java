@@ -38,9 +38,12 @@ public class Edge
 	public boolean equals(Edge other)
 	{
 		System.out.println(name + "==" + other.getName());
-		if (name != other.getName())
+		if (this.name != other.getName())
 			return false;
-		//if (source !=)
+		if (!this.getSource().equals( other.getSource() ))
+			return false;
+		if (!this.getDestination().equals( other.getDestination() ))
+			return false;
 		return true;
 	}
 	

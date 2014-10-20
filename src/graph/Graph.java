@@ -29,7 +29,8 @@ public class Graph {
 	
 	public void addNode(Node newNode)
 	{
-		this.nodes.put(newNode.getName(), newNode);
+		if (!this.nodes.containsValue(newNode))
+			this.nodes.put(newNode.getName(), newNode);
 	}
 	
 	public Node getNode(String name)
@@ -39,11 +40,12 @@ public class Graph {
 	
 	public void addEdge(Edge newEdge)
 	{
-		if (!this.nodes.containsValue(newEdge.getSource()))
-			this.nodes.put(newEdge.getName(), newEdge.getSource());
-		if (!this.nodes.containsValue(newEdge.getDestination()))
-			this.nodes.put(newEdge.getName(), newEdge.getDestination());
+		System.out.println("Adding edge: " + newEdge.getName());
 		
+		newEdge.getSource().addEdge(newEdge); // add edge to node as startingEdge 
+		
+		addNode(newEdge.getSource()); // add node to graph
+		addNode(newEdge.getDestination());
 		if (this.edges.containsValue(newEdge))
 			System.out.println("Edge is already contained!");
 		
@@ -52,15 +54,10 @@ public class Graph {
 
 	public void addBidirectionalEdge(Edge newEdge)
 	{
-		if (!nodes.containsValue(newEdge.getSource()))
-			nodes.put(newEdge.getName(), newEdge.getSource());
-		if (!nodes.containsValue(newEdge.getDestination()))
-			nodes.put(newEdge.getName(), newEdge.getDestination());
-		
-		edges.put(newEdge.getName(), newEdge);
-		edges.put(newEdge.getName(),
-                new Edge(newEdge.getDestination(), newEdge.getSource(), newEdge.getName()));
+		this.addEdge(newEdge);
+		addEdge(new Edge(newEdge.getDestination(), newEdge.getSource(), newEdge.getName()+"*" ));
 	}
+
 	public Edge getEdge(String name)
 	{
 		return this.edges.get(name);
