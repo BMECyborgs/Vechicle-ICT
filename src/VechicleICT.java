@@ -1,4 +1,7 @@
+import java.util.ArrayList;
+
 import graph.Coordinate;
+import graph.Dijkstra;
 import graph.Edge;
 import graph.Graph;
 import graph.Node;
@@ -33,13 +36,26 @@ public class VechicleICT {
 		
 		// Locations
 		Node gellert = new Node(new Coordinate(0, -12), "Szent Gellért Tér");
-		Node korter = new Node(new Coordinate(-2, -14), "Móricz");
+		Node moricz = new Node(new Coordinate(-2, -14), "Móricz");
 		Node ujbuda = new Node(new Coordinate(-2, -16), "Újbuda Központ");
+		Node kosztolanyi = new Node(new Coordinate(-4, -15), "Kosztolányi tér");
 		
 
-		myCity.addEdge(new Edge(gellert, korter, "Bartók Béla út"));
-		myCity.addEdge(new Edge(gellert, korter, "Bartók Béla út"));
+		myCity.addBidirectionalEdge(new Edge(gellert, moricz, "Bartók Béla út"));
+		myCity.addBidirectionalEdge(new Edge(moricz, ujbuda, "Fehérvári út"));
+		myCity.addBidirectionalEdge(new Edge(ujbuda, kosztolanyi, "Bocskai út"));
+		myCity.addBidirectionalEdge(new Edge(moricz, kosztolanyi, "Bartók Béla út+"));
 		myCity.print();
+		
+		Dijkstra dijkstra;
+		
+		ArrayList<String> path = Dijkstra.shortestPath(myCity, "Szent Gellért Tér", "Újbuda Központ");
+			
+		System.out.println("\r\n--Your shortest path:");
+		for (String road : path)
+		{
+			System.out.println(road);
+		}
 	}
 
 }
