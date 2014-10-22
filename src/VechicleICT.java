@@ -47,10 +47,9 @@ public class VechicleICT {
 		myCity.addBidirectionalEdge(new Edge(moricz, kosztolanyi, "Bartók Béla út+"));
 		myCity.print();
 		
-		Dijkstra dijkstra;
-		
+
 		ArrayList<String> path = Dijkstra.shortestPath(myCity, "Szent Gellért Tér", "Újbuda Központ");
-			
+
 		System.out.println("\r\n--Your shortest path:");
 		for (String road : path)
 		{
