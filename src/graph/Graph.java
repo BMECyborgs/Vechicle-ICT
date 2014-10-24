@@ -38,11 +38,27 @@ public class Graph {
 		return this.nodes.get(name);
 	}
 	
+	public void addEdge(String source, String destination) 
+	{
+		addEdge(source, destination, source + destination);
+	}
+	
+	public void addEdge(String source, String destination, String name) 
+	{
+		if (!this.nodes.keySet().contains(source) || !this.nodes.keySet().contains(destination)) return;
+		
+		if (this.edges.keySet().contains(name)) return;
+		
+		Edge e = new Edge(this.nodes.get(source), this.nodes.get(destination), name);
+		this.edges.put(name, e);
+		this.nodes.get(source).addStartingEdge(e);
+	}
+	
 	public void addEdge(Edge newEdge)
 	{
 		System.out.println("Adding edge: " + newEdge.getName());
 		
-		newEdge.getSource().addEdge(newEdge); // add edge to node as startingEdge 
+		newEdge.getSource().addStartingEdge(newEdge); // add edge to node as startingEdge 
 		
 		addNode(newEdge.getSource()); // add node to graph
 		addNode(newEdge.getDestination());

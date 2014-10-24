@@ -15,7 +15,7 @@ public class Node {
 		this.startingEdges = new ArrayList<Edge>();
 	}
 	
-	public void addEdge(Edge newEdge)
+	public void addStartingEdge(Edge newEdge)
 	{
 		if (!this.startingEdges.contains(newEdge))
 			this.startingEdges.add(newEdge);

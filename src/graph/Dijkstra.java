@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,9 +19,11 @@ public class Dijkstra {
 
 	public static ArrayList<String> dijkstra(Graph g, Node source, Node destination, WeightType wt) {
 
-		Map<String, Double> dist = new HashMap<String, Double>();
+		HashMap<String, String> previousInPath = new HashMap<String, String>();
+		
+		if (g == null || g.getNodes().size() == 0) return new ArrayList<String>();
 
-		ArrayList<String> path = new ArrayList<String>();
+		Map<String, Double> dist = new HashMap<String, Double>();
 
 		Set<String> visited = new HashSet<String>();
 
@@ -46,17 +49,35 @@ public class Dijkstra {
 
 				if (dist.get(n) > d) {
 
+					// refresh distance of n
 					dist.remove(n);
 					dist.put(n, d);
-
-					if (path.contains(n)) {
-						path.remove(n);
-					}
-					path.add(n);
+					
+					// refresh previous node of n
+					if (previousInPath.containsKey(n))
+						previousInPath.remove(n);
+					previousInPath.put(n, next);
 				}
 			}
 		}
-		return path;
+		return getPath(previousInPath, source.getName(), destination.getName());
+	}
+
+	private static ArrayList<String> getPath(HashMap<String, String> previousInPath, String source, String destination) {
+		ArrayList<String> pathToDestination = new ArrayList<String>();
+		
+		if (previousInPath.containsKey(destination)) {
+			String current = destination;
+			while (current != source) {
+				pathToDestination.add(current);
+				current = previousInPath.get(current);
+			}
+			pathToDestination.add(source);
+		}
+		
+		Collections.reverse(pathToDestination);
+		
+		return pathToDestination;
 	}
 
 	private static String minVertex(Map<String, Double> dist, Set<String> visited) {

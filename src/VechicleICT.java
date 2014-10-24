@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 
+import junit.framework.Assert;
+
 import graph.Coordinate;
 import graph.Dijkstra;
 import graph.Edge;
@@ -55,6 +57,7 @@ public class VechicleICT {
 		{
 			System.out.println(road);
 		}
+		
 	}
 
 }
