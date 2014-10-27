@@ -19,11 +19,39 @@ public class EdgeTest {
 		
 		Edge e = new Edge(n0, n1, "Test");
 		
-		Assert.assertEquals("Test", e.getName());
+		assertEquals("Test", e.getName());
 		
-		Assert.assertEquals(n0, e.getSource());
-		Assert.assertEquals(n1, e.getDestination());
+		assertEquals(n0, e.getSource());
+		assertEquals(n1, e.getDestination());
 		
-		Assert.assertEquals(5.0, e.getLength(), 0.01);
+		assertEquals(5.0, e.getLength(), 0.01);
+	}
+	
+	@Test
+	public void EdgePropertyTrafficJamTest()
+	{
+		Node n0 = new Node(new Coordinate(0,0), "Origo");
+		Node n1 = new Node(new Coordinate(4,3), "Other");
+		
+		Edge e = new Edge(n0, n1, "Test");
+		assertFalse(e.hasTrafficJam());
+		
+		e.setTrafficJam(true);
+		
+		assertTrue(e.hasTrafficJam());
+	}
+	
+	@Test
+	public void EdgePropertyTimeLimitTest()
+	{
+		Node n0 = new Node(new Coordinate(0,0), "Origo");
+		Node n1 = new Node(new Coordinate(4,3), "Other");
+		Edge e = new Edge(n0, n1, "Test");
+		
+		assertEquals(50, e.getSpeedLimit()); // default
+		
+		e.setSpeedLimit(30);
+		
+		assertEquals(30, e.getSpeedLimit());
 	}
 }

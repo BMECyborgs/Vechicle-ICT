@@ -6,6 +6,10 @@ public class Edge
 	private Node destination;
 	private String name;
 	
+	// Routing properties
+	private boolean trafficJam = false;
+	private int speedLimit = 50;
+	
 	public Edge(Node source, Node destination, String name)
 	{
 		this.source = source;
@@ -63,6 +67,26 @@ public class Edge
 	public double getCost() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	public void setTrafficJam(boolean jam)
+	{
+		this.trafficJam = jam;
+	}
+	
+	public boolean hasTrafficJam()
+	{
+		return this.trafficJam;
+	}
+	
+	public int getSpeedLimit()
+	{
+		return this.speedLimit;
+	}
+
+	public void setSpeedLimit(int limit)
+	{
+		this.speedLimit = limit;
 	}
 	
 }
