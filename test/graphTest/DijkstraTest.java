@@ -2,6 +2,7 @@ package graphTest;
 
 import graph.Coordinate;
 import graph.Dijkstra;
+import graph.Edge;
 import graph.Graph;
 import graph.Node;
 import graph.WeightType;
@@ -78,6 +79,20 @@ public class DijkstraTest {
 		Assert.assertEquals("6", result.get(3));
 		Assert.assertEquals("4", result.get(4));
 	}
+	
+	@Test
+	public void testAvoidTrafficJam()
+	{
+		Graph g = buildJammed();
+		
+		ArrayList<String> result = Dijkstra.shortestPath(g, "A", "B");
+		
+		Assert.assertEquals("A", result.get(0));
+		Assert.assertEquals("C", result.get(1));
+		Assert.assertEquals("B", result.get(2));
+		
+	}
+	
 
 	private Graph buildG1() {
 		Graph g = new Graph();
@@ -125,6 +140,24 @@ public class DijkstraTest {
 		g.addEdge("A", "B");
 		g.addEdge("A", "C");
 		g.addEdge("C", "D");
+		
+		return g;
+	}
+	
+	private Graph buildJammed()
+	{
+		Graph g = new Graph();
+		Node n0 = new Node(new Coordinate(0, 0), "A");
+		Node n = new Node(new Coordinate(0, 1), "B");
+		
+		
+		Edge jammed = new Edge(n0, n, "Jammed");
+		jammed.setTrafficJam(true);
+		
+		g.addEdge(jammed);
+		g.addNode(new Node(new Coordinate(10,10), "C"));
+		g.addEdge("A", "C");
+		g.addEdge("C", "B");
 		
 		return g;
 	}

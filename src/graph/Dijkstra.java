@@ -41,6 +41,10 @@ public class Dijkstra {
 			for (String n : neighbours) {
 				double d = dist.get(next);
 
+				// avoid traffic jam
+				if (g.getEdge(next, n).hasTrafficJam())
+					continue;
+				
 				if (wt == WeightType.LENGTH) {
 					d += g.getEdge(next, n).getLength();
 				} else if (wt == WeightType.COST) {
