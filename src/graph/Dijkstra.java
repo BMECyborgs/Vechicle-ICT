@@ -13,6 +13,10 @@ public class Dijkstra {
 		return Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.LENGTH);
 	}
 	
+	public static ArrayList<String> fastestPath(Graph g, String source, String destination) {
+		return Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.TIME);
+	}
+		
 	public static ArrayList<String> cheapestPath(Graph g, String source, String destination) {
 		return Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.COST);
 	}
@@ -49,6 +53,8 @@ public class Dijkstra {
 					d += g.getEdge(next, n).getLength();
 				} else if (wt == WeightType.COST) {
 					d += g.getEdge(next, n).getCost();
+				} else if (wt == WeightType.TIME) {
+					d += g.getEdge(next, n).getTravelTime();
 				}
 
 				if (dist.get(n) > d) {

@@ -81,6 +81,18 @@ public class DijkstraTest {
 	}
 	
 	@Test
+	public void testFastestPath()
+	{
+		Graph g = buildWithSpeedLimit();
+		
+		ArrayList<String> result = Dijkstra.fastestPath(g, "A", "B");
+		
+		Assert.assertEquals("A", result.get(0));
+		Assert.assertEquals("C", result.get(1));
+		Assert.assertEquals("B", result.get(2));
+	}
+	
+	@Test
 	public void testAvoidTrafficJam()
 	{
 		Graph g = buildJammed();
@@ -158,6 +170,27 @@ public class DijkstraTest {
 		g.addNode(new Node(new Coordinate(10,10), "C"));
 		g.addEdge("A", "C");
 		g.addEdge("C", "B");
+		
+		return g;
+	}
+	
+	private Graph buildWithSpeedLimit()
+	{
+		Graph g = new Graph();
+		Node n0 = new Node(new Coordinate(0, 0), "A");
+		Node n = new Node(new Coordinate(0, 10), "B");
+		Node n1 = new Node(new Coordinate(30, 30), "C");
+		
+		Edge slow = new Edge(n0, n, "Slow");
+		slow.setSpeedLimit(10);
+		Edge fast1 = new Edge(n0, n1, "RoadWay1");
+		fast1.setSpeedLimit(100);
+		Edge fast2 = new Edge(n1, n, "RoadWay2");
+		fast2.setSpeedLimit(100);
+		
+		g.addEdge(slow);
+		g.addEdge(fast1);
+		g.addEdge(fast2);
 		
 		return g;
 	}
