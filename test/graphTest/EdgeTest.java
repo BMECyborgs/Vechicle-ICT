@@ -54,4 +54,17 @@ public class EdgeTest {
 		
 		assertEquals(30, e.getSpeedLimit());
 	}
+	
+	@Test
+	public void EdgeTravelTimeTest()
+	{
+		Node n0 = new Node(new Coordinate(0,0), "Origo");
+		Node n1 = new Node(new Coordinate(40,30), "Other");
+		
+		Edge e = new Edge(n0, n1, "Test");
+		
+		e.setSpeedLimit(25);
+		
+		assertEquals(2, e.getTravelTime(), 0.01);
+	}
 }

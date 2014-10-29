@@ -88,5 +88,9 @@ public class Edge
 	{
 		this.speedLimit = limit;
 	}
+
+	public double getTravelTime() {
+		return this.getLength()/this.speedLimit;
+	}
 	
 }
