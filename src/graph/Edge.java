@@ -9,12 +9,29 @@ public class Edge
 	// Routing properties
 	private boolean trafficJam = false;
 	private int speedLimit = 50;
+	private double cost = 0;
 	
 	public Edge(Node source, Node destination, String name)
 	{
 		this.source = source;
 		this.destination = destination;
 		this.name = name;
+	}
+	
+	public Edge(Node source, Node destination, String name, double cost)
+	{
+		this.source = source;
+		this.destination = destination;
+		this.name = name;
+		this.cost = cost;
+	}
+	
+	public Edge(Node source, Node destination, String name, double cost, int speedLimit)
+	{
+		this.source = source;
+		this.destination = destination;
+		this.name = name;
+		this.cost = cost;
 	}
 	
 	public String getName()
@@ -65,10 +82,13 @@ public class Edge
 	}
 
 	public double getCost() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.cost;
 	}
 	
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
 	public void setTrafficJam(boolean jam)
 	{
 		this.trafficJam = jam;
