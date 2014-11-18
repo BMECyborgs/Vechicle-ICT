@@ -40,6 +40,17 @@ public class PathTest
 		Assert.assertEquals(2.0/50, path.getFullDuration(), 0.01);
 	}
 	
+	@Test
+	public void getFullCost()
+	{
+		Path path = buildSimplePath();
+		
+		Assert.assertEquals(0, path.getFullCost(), 0.01);
+	}
+	
+	
+	
+	
 	private Path buildSimplePath()
 	{
 		Node node0 = new Node(new Coordinate(0,0), "origo");
