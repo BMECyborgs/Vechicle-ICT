@@ -5,6 +5,7 @@ import graph.Dijkstra;
 import graph.Edge;
 import graph.Graph;
 import graph.Node;
+import graph.Path;
 import graph.WeightType;
 
 import java.util.ArrayList;
@@ -17,16 +18,16 @@ public class DijkstraTest {
 
 	@Test
 	public void testDijkstraNull() {
-		ArrayList<String> result = Dijkstra.dijkstra(null, null, null, WeightType.LENGTH);
+		Path result = Dijkstra.dijkstra(null, null, null, WeightType.LENGTH);
 
-		Assert.assertEquals(0, result.size());
+		Assert.assertEquals(0, result.getSize());
 	}
 
 	@Test
 	public void testShortestPathEmpty() {
 		ArrayList<String> result = Dijkstra.shortestPath(new Graph(), "", "");
 
-		Assert.assertEquals(0, result.size());
+		Assert.assertTrue(result.isEmpty());
 	}
 	
 	@Test

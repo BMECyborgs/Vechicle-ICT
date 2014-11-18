@@ -8,34 +8,29 @@ import java.util.Map;
 import java.util.Set;
 
 public class Dijkstra {
-	
-	private static double actualLengthOfPath;
-	private static ArrayList<Double> actualCostsOfEdges;
-	private static ArrayList<Double> actualDurationsOfEdges;
-	private static double actualDurationsOfPath;	
-	
+
 	public static double ActualLengthOfPath (Graph g, String source, String destination)
 	{
-		Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.LENGTH);
-		return actualLengthOfPath;
+		Path path = Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.LENGTH);
+		return path.getFullLength();
 	}
 	
 	public static ArrayList<Double> ActualCostsOfEdges(Graph g, String source, String destination)
 	{
-		Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.COST);
-		return actualCostsOfEdges;
+		Path path = Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.COST);
+		return path.getSeparateCosts();
 	}
 	
 	public static ArrayList<Double> ActualDurationsOfEdges(Graph g, String source, String destination)
 	{
-		Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.TIME);
-		return actualDurationsOfEdges;
+		Path path = Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.TIME);
+		return path.getSeparateDurations();
 	}
 	
 	public static double ActualDurationsOfPath(Graph g, String source, String destination)
 	{
-		Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.TIME);
-		return actualDurationsOfPath;
+		Path path = Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.TIME);
+		return path.getFullDuration();
 	}
 
 /*	
@@ -47,113 +42,88 @@ public class Dijkstra {
 */	
 
 	public static ArrayList<String> shortestPath(Graph g, String source, String destination) {
-		return Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.LENGTH);
+		Path path = Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.LENGTH);
+		return path.getStringListOfNodes();
 	}
 	
 	public static ArrayList<String> fastestPath(Graph g, String source, String destination) {
-		return Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.TIME);
+		Path path = Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.TIME);
+		return path.getStringListOfNodes();
 	}
 		
 	public static ArrayList<String> cheapestPath(Graph g, String source, String destination) {
-		return Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.COST);
+		Path path = Dijkstra.dijkstra(g, g.getNode(source), g.getNode(destination), WeightType.COST);
+		return path.getStringListOfNodes();
 	}
 
-	public static ArrayList<String> dijkstra(Graph g, Node source, Node destination, WeightType wt) 
+	public static Path dijkstra(Graph g, Node source, Node destination, WeightType wt) 
 	{
 		
 		HashMap<String, Edge> previousInPath = new HashMap<String, Edge>();
 		
-		if (g == null || g.getNodes().size() == 0) return new ArrayList<String>();
+		if (g == null || g.getNodes().size() == 0)
+			return new Path();
 
-		Map<String, Double> dist = new HashMap<String, Double>();
+		Map<String, Double> distanceMap = new HashMap<String, Double>();
 
 		Set<String> visited = new HashSet<String>();
 
 		for (String s : g.getNodes().keySet()) {
-			dist.put(s, Double.MAX_VALUE);
+			distanceMap.put(s, Double.MAX_VALUE);
 		}
-		dist.remove(source.getName());
-		dist.put(source.getName(), 0.0);
+		distanceMap.remove(source.getName());
+		distanceMap.put(source.getName(), 0.0);
 
-		for (int i = 0; i < dist.size(); i++) 
+		for (int i = 0; i < distanceMap.size(); i++) 
 		{
-			String next = minVertex(dist, visited);
+			String next = GetNearestNode(distanceMap, visited);
 			visited.add(next);
 
 			ArrayList<String> neighbours = g.getNode(next).getNeighbours();
-			for (String n : neighbours) 
+			for (String node : neighbours) 
 			{
-				double d = dist.get(next);
+				double distance = distanceMap.get(next);
 
 				// avoid traffic jam
-				Edge edge = g.getEdge(next, n);
+				Edge edge = g.getEdge(next, node);
 				if (edge.hasTrafficJam())
 					continue;
+				switch (wt)
+				{
+					case LENGTH: 
+						distance += edge.getLength();
+						break;
+					case COST:
+						distance += edge.getCost();
+						break;
+					case TIME: 
+						distance += edge.getTravelTime();
+						break;
+					default:
+						break;
+				}
 				
-				if (wt == WeightType.LENGTH) 
-				{
-					d += edge.getLength();
-				}
-				else if (wt == WeightType.COST) 
-				{
-					d += edge.getCost();
-				} 
-				else if (wt == WeightType.TIME) 
-				{
-					d += edge.getTravelTime();
-				}
-
-				if (dist.get(n) > d) 
+				if (distanceMap.get(node) > distance) 
 				{
 					// refresh distance of n
-					dist.remove(n);
-					dist.put(n, d);
+					distanceMap.remove(node);
+					distanceMap.put(node, distance);
 					
 					// refresh previous node of n
-					if (previousInPath.containsKey(n))
-						previousInPath.remove(n);
-					previousInPath.put(n, edge);
+					if (previousInPath.containsKey(node))
+						previousInPath.remove(node);
+					previousInPath.put(node, edge);
 				}
 			}
 		}
 
 		ArrayList<Edge> edgesOfPath = getPath(previousInPath, source.getName(), destination.getName());
+		Path path = new Path();
+		for (Edge edge : edgesOfPath)
+			path.addEdge(edge);
 		
-		actualLengthOfPath = 0;
-		actualCostsOfEdges = new ArrayList<Double> ();
-		actualDurationsOfEdges = new ArrayList<Double>();
-		actualDurationsOfPath = 0;
-		ArrayList<String> path = new ArrayList<String>();
-		
-		for (Edge edge : edgesOfPath) {
-			
-			if (wt == WeightType.LENGTH) {
-				
-				actualLengthOfPath += edge.getLength();	
-				
-			} else if (wt == WeightType.COST) {
-				
-				actualCostsOfEdges.add(edge.getCost());
-				
-			} else if (wt == WeightType.TIME) {
-				
-				double time = edge.getTravelTime();
-				actualDurationsOfEdges.add(time);
-				actualDurationsOfPath += time;
-				
-			}
-			
-			//Add source to path
-			path.add(edge.getSource().getName());
-			
-			//Add destination to path if it was the last edge
-			if (edgesOfPath.indexOf(edge) + 1 == edgesOfPath.size()) {
-				path.add(edge.getDestination().getName());
-			}
-				
-		}
-					
 		return path;
+	
 	}
 
 	private static ArrayList<Edge> getPath(HashMap<String, Edge> previousInPath, String source, String destination) 
@@ -173,16 +143,16 @@ public class Dijkstra {
 		return pathToDestination;
 	}
 
-	private static String minVertex(Map<String, Double> dist, Set<String> visited) {
-		double x = Double.MAX_VALUE;
-		String nearest = null;
-		for (String s : dist.keySet()) {
-			if (!visited.contains(s) && dist.get(s) < x) {
-				nearest = s;
-				x = dist.get(s);
+	private static String GetNearestNode(Map<String, Double> nodes, Set<String> visitedNodes) {
+		double distance = Double.MAX_VALUE;
+		String nearestNode = null;
+		for (String nodeName : nodes.keySet()) {
+			if (!visitedNodes.contains(nodeName) && nodes.get(nodeName) < distance) {
+				nearestNode = nodeName;
+				distance = nodes.get(nodeName);
 			}
 		}
 
-		return nearest;
+		return nearestNode;
 	}
 }
